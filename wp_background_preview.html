@@ -1,0 +1,282 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  @keyframes auroraDrift {
+    0%   { background-position: 0% 20%; }
+    25%  { background-position: 60% 80%; }
+    50%  { background-position: 100% 40%; }
+    75%  { background-position: 40% 100%; }
+    100% { background-position: 0% 20%; }
+  }
+  @keyframes blobA {
+    0%,100%{ transform:translate(0,0) scale(1); }
+    33%    { transform:translate(20px,-15px) scale(1.06); }
+    66%    { transform:translate(-12px,11px) scale(0.96); }
+  }
+  @keyframes blobB {
+    0%,100%{ transform:translate(0,0) scale(1); }
+    33%    { transform:translate(-18px,12px) scale(1.04); }
+    66%    { transform:translate(14px,-16px) scale(0.97); }
+  }
+  @keyframes blobC {
+    0%,100%{ transform:translate(0,0) scale(1); }
+    33%    { transform:translate(11px,19px) scale(1.05); }
+    66%    { transform:translate(-15px,-9px) scale(0.97); }
+  }
+  @keyframes glowPulse {
+    0%,100%{ opacity:0.4; transform:scale(1); }
+    50%    { opacity:0.9; transform:scale(1.1); }
+  }
+  @keyframes particleRise {
+    0%  { transform:translateY(0) translateX(0); opacity:0; }
+    10% { opacity:0.7; }
+    90% { opacity:0.7; }
+    100%{ transform:translateY(-40px) translateX(10px); opacity:0; }
+  }
+
+  .preview-wrap { padding: 16px 0; }
+  .section-label { font-size: 11px; font-weight: 600; letter-spacing: .06em; color: var(--color-text-secondary); text-transform: uppercase; margin-bottom: 6px; padding-left: 2px; }
+
+  .section-card {
+    position: relative; overflow: hidden; isolation: isolate;
+    border-radius: 14px; height: 110px; margin-bottom: 20px;
+    border: 1px solid rgba(0,0,0,0.07);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 22px;
+  }
+  .section-card::before, .section-card::after { pointer-events:none; }
+
+  .card-info { position:relative; z-index:1; }
+  .card-class { font-family: monospace; font-size:13px; font-weight:600; color:#1e293b; margin-bottom:3px; }
+  .card-desc { font-size:11px; color:#64748b; }
+  .card-badge {
+    position:relative; z-index:1; font-size:10px; padding:4px 10px;
+    border-radius:20px; background:rgba(255,255,255,0.7); color:#475569;
+    border:1px solid rgba(255,255,255,0.9); backdrop-filter:blur(8px); font-weight:500;
+  }
+
+  /* HERO */
+  .hero-card {
+    background: linear-gradient(135deg, #ffffff 0%, #eff0ff 25%, #e8f0fe 50%, #f3f0ff 75%, #ffffff 100%);
+    background-size: 300% 300%; animation: auroraDrift 10s ease-in-out infinite;
+  }
+  .hero-card::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse 55% 80% at 15% 30%, rgba(167,139,250,.22) 0%,transparent 55%),
+                radial-gradient(ellipse 45% 60% at 85% 20%, rgba(96,165,250,.18) 0%,transparent 55%),
+                radial-gradient(ellipse 40% 60% at 65% 85%, rgba(52,211,153,.14) 0%,transparent 55%);
+    animation: blobA 12s ease-in-out infinite; z-index:-1;
+  }
+
+  /* VIOLET */
+  .violet-card { background: linear-gradient(150deg,#f5f3ff 0%,#ede9fe 60%,#f0edff 100%); }
+  .violet-card::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse 65% 80% at 80% 20%, rgba(167,139,250,.22) 0%,transparent 58%),
+                radial-gradient(ellipse 50% 60% at 15% 80%, rgba(139,92,246,.14) 0%,transparent 58%);
+    animation: blobC 14s ease-in-out infinite; z-index:-1;
+  }
+
+  /* BLUE */
+  .blue-card { background: linear-gradient(150deg,#eff6ff 0%,#dbeafe 60%,#e8f0fe 100%); }
+  .blue-card::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse 65% 80% at 78% 22%, rgba(96,165,250,.22) 0%,transparent 58%),
+                radial-gradient(ellipse 50% 60% at 20% 78%, rgba(59,130,246,.15) 0%,transparent 58%);
+    animation: blobA 16s ease-in-out infinite; z-index:-1;
+  }
+
+  /* EMERALD */
+  .emerald-card { background: linear-gradient(150deg,#f0fdf4 0%,#dcfce7 60%,#ecfdf5 100%); }
+  .emerald-card::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse 65% 80% at 22% 28%, rgba(52,211,153,.20) 0%,transparent 58%),
+                radial-gradient(ellipse 50% 60% at 82% 78%, rgba(16,185,129,.14) 0%,transparent 58%);
+    animation: blobB 17s ease-in-out infinite; z-index:-1;
+  }
+
+  /* WARM */
+  .warm-card { background: linear-gradient(150deg,#fff7ed 0%,#fef3c7 60%,#fffbeb 100%); }
+  .warm-card::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse 65% 80% at 72% 25%, rgba(251,191,36,.20) 0%,transparent 58%),
+                radial-gradient(ellipse 50% 60% at 22% 78%, rgba(245,158,11,.15) 0%,transparent 58%);
+    animation: blobC 15s ease-in-out infinite; z-index:-1;
+  }
+
+  /* ROSE */
+  .rose-card { background: linear-gradient(150deg,#fff1f2 0%,#ffe4e6 60%,#fdf2f8 100%); }
+  .rose-card::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse 65% 80% at 76% 22%, rgba(251,113,133,.22) 0%,transparent 58%),
+                radial-gradient(ellipse 50% 60% at 20% 78%, rgba(244,63,94,.13) 0%,transparent 58%);
+    animation: blobA 13s ease-in-out infinite; z-index:-1;
+  }
+
+  /* WHITE */
+  .white-card { background:#ffffff; }
+  .white-card::before {
+    content:''; position:absolute; width:100%; height:70%; top:-20%; left:0;
+    background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(167,139,250,.10) 0%,transparent 65%);
+    animation: glowPulse 6s ease-in-out infinite; z-index:-1;
+  }
+
+  /* MESH */
+  .mesh-card {
+    background: linear-gradient(135deg,#ffffff 0%,#f0f4ff 20%,#f5f3ff 40%,#f0fff4 60%,#fff7ed 80%,#fff1f2 100%);
+    background-size:400% 400%; animation: auroraDrift 8s ease-in-out infinite;
+  }
+  .mesh-card::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse 45% 70% at 20% 20%, rgba(167,139,250,.16) 0%,transparent 55%),
+                radial-gradient(ellipse 40% 60% at 80% 80%, rgba(52,211,153,.14) 0%,transparent 55%);
+    animation: blobA 11s ease-in-out infinite; z-index:-1;
+  }
+
+  /* GRAY */
+  .gray-card { background: linear-gradient(150deg,#f9fafb 0%,#f3f4f6 100%); }
+  .gray-card::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(148,163,184,.10) 0%,transparent 60%);
+    animation: glowPulse 8s ease-in-out infinite; z-index:-1;
+  }
+
+  /* Particles example */
+  .particles-card::after {
+    content:''; position:absolute; inset:0;
+    background-image:
+      radial-gradient(circle 3px at 15% 75%, rgba(167,139,250,.6) 0%,transparent 100%),
+      radial-gradient(circle 2.5px at 85% 25%, rgba(96,165,250,.55) 0%,transparent 100%),
+      radial-gradient(circle 2.5px at 55% 65%, rgba(52,211,153,.5) 0%,transparent 100%),
+      radial-gradient(circle 2px at 35% 40%, rgba(251,191,36,.5) 0%,transparent 100%),
+      radial-gradient(circle 2.5px at 70% 80%, rgba(251,113,133,.45) 0%,transparent 100%);
+    animation: particleRise 7s ease-in-out infinite; z-index:-1;
+  }
+
+  /* Glow example */
+  .glow-card::after {
+    content:''; position:absolute; width:50%; height:90%; top:5%; left:25%;
+    border-radius:50%;
+    background: radial-gradient(circle,rgba(167,139,250,.18) 0%,transparent 70%);
+    animation: glowPulse 5s ease-in-out infinite; z-index:-1;
+  }
+
+  .divider { height:1px; background:rgba(0,0,0,0.06); margin:8px 0 20px; }
+  .section-group-title { font-size:12px; font-weight:600; color:var(--color-text-secondary); margin-bottom:12px; }
+  .modifier-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
+</style>
+
+<div class="preview-wrap">
+  <h2 class="sr-only">WordPress background section style preview</h2>
+
+  <div class="section-label">Base classes — paste on any section</div>
+
+  <div class="section-label">Hero</div>
+  <div class="section-card hero-card">
+    <div class="card-info">
+      <div class="card-class">.bg-hero</div>
+      <div class="card-desc">Animated aurora gradient + floating orbs</div>
+    </div>
+    <div class="card-badge">Most expressive</div>
+  </div>
+
+  <div class="section-label">Violet</div>
+  <div class="section-card violet-card">
+    <div class="card-info">
+      <div class="card-class">.bg-violet</div>
+      <div class="card-desc">Soft lavender with animated purple orbs</div>
+    </div>
+    <div class="card-badge">Great for About</div>
+  </div>
+
+  <div class="section-label">Blue</div>
+  <div class="section-card blue-card">
+    <div class="card-info">
+      <div class="card-class">.bg-blue</div>
+      <div class="card-desc">Cool soft blue, calming and professional</div>
+    </div>
+    <div class="card-badge">Great for Services</div>
+  </div>
+
+  <div class="section-label">Emerald</div>
+  <div class="section-card emerald-card">
+    <div class="card-info">
+      <div class="card-class">.bg-emerald</div>
+      <div class="card-desc">Fresh green tint with moving orbs</div>
+    </div>
+    <div class="card-badge">Great for Features</div>
+  </div>
+
+  <div class="section-label">Warm</div>
+  <div class="section-card warm-card">
+    <div class="card-info">
+      <div class="card-class">.bg-warm</div>
+      <div class="card-desc">Amber & cream, inviting and warm</div>
+    </div>
+    <div class="card-badge">Great for Testimonials</div>
+  </div>
+
+  <div class="section-label">Rose</div>
+  <div class="section-card rose-card">
+    <div class="card-info">
+      <div class="card-class">.bg-rose</div>
+      <div class="card-desc">Soft blush with animated pink orbs</div>
+    </div>
+    <div class="card-badge">Great for CTA</div>
+  </div>
+
+  <div class="section-label">White</div>
+  <div class="section-card white-card">
+    <div class="card-info">
+      <div class="card-class">.bg-white</div>
+      <div class="card-desc">Pure white with a breathing glow at top</div>
+    </div>
+    <div class="card-badge">Minimal & clean</div>
+  </div>
+
+  <div class="section-label">Mesh (most animated)</div>
+  <div class="section-card mesh-card">
+    <div class="card-info">
+      <div class="card-class">.bg-mesh</div>
+      <div class="card-desc">Full shifting color mesh — never the same</div>
+    </div>
+    <div class="card-badge">Eye-catching</div>
+  </div>
+
+  <div class="section-label">Gray</div>
+  <div class="section-card gray-card">
+    <div class="card-info">
+      <div class="card-class">.bg-gray</div>
+      <div class="card-desc">Neutral light-gray, safe for any content</div>
+    </div>
+    <div class="card-badge">Universal</div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">Optional modifiers — combine with any class above</div>
+
+  <div class="modifier-row">
+    <div>
+      <div class="section-label">+ Particles</div>
+      <div class="section-card violet-card particles-card" style="height:80px;">
+        <div class="card-info">
+          <div class="card-class">.has-particles</div>
+          <div class="card-desc" style="font-size:10px;">Floating dot layer</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">+ Glow</div>
+      <div class="section-card blue-card glow-card" style="height:80px;">
+        <div class="card-info">
+          <div class="card-class">.has-glow</div>
+          <div class="card-desc" style="font-size:10px;">Centred radial glow</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--color-background-secondary);border-radius:10px;padding:14px 16px;font-size:12px;color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary);">
+    <strong style="color:var(--color-text-primary);font-weight:500;">Example usage in Gutenberg:</strong> Select a Group block → Advanced (right sidebar) → Additional CSS class(es) → type <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:4px;font-size:11px;">bg-violet has-particles</code>
+  </div>
+</div>
